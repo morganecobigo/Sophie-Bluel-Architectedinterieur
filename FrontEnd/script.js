@@ -11,13 +11,15 @@ const logoutUser = () => {
   localStorage.removeItem("token");
   window.location.href = "./index.html";
 };
+
+// fermer la modale
+
 const closeModal = () => {
   const mainModal = document.querySelector(".mainModal");
   mainModal.innerHTML = "";
 };
 // pour supprimer un projet
 const deleteWork = (id) => {
-  console.log("Bearer " + token);
   fetch(`http://localhost:5678/api/works/${id}`, {
     method: "DELETE",
     headers: {
@@ -57,6 +59,7 @@ const addWork = () => {
 };
 
 // première partie modale
+
 const generateFirstModalContent = () => {
   const modalContent = document.querySelector(".modalContent");
   modalContent.innerHTML = "";
@@ -65,7 +68,6 @@ const generateFirstModalContent = () => {
   const closeIcon = document.createElement("i");
   closeIcon.className = "fa-solid fa-xmark";
   closeIconContainer.appendChild(closeIcon);
-
   const titleModal = document.createElement("h1");
   titleModal.innerHTML = "Galerie photo";
   titleModal.className = "titleModal";
@@ -73,11 +75,12 @@ const generateFirstModalContent = () => {
   const galleryModal = document.createElement("div");
   galleryModal.className = "galleryModal";
   modalContent.appendChild(galleryModal);
-
   modalContent.appendChild(closeIconContainer);
   const modalWorksContainer = document.createElement("div");
   modalWorksContainer.className = "modalWorksContainer";
+
   // galerie d'images
+
   for (let i = 0; i < works.length; i++) {
     const figure = document.createElement("figure");
     figure.className = "modalWork";
@@ -220,7 +223,7 @@ const generateModalPhoto = () => {
       file.type !== "image/png" &&
       file.type !== "image/jpg"
     ) {
-      alert("Le fichier n'est pas du type jpeg ou png");
+      alert("Le fichier n'est pas du type jpg ou png");
     } else if (size > 4000000) {
       alert("image trop volumineuse");
     } else {
@@ -251,13 +254,15 @@ const generateModalPhoto = () => {
     }
   });
 };
-// modale
+// partie modale
 const generateModal = () => {
   const mainModal = document.querySelector(".mainModal");
   const modalContainer = document.createElement("div");
   modalContainer.className = "containerModal";
+  modalContainer.addEventListener("click", closeModal);
   const modalContent = document.createElement("div");
   modalContent.className = "modalContent";
+  modalContent.addEventListener("click", (e) => e.stopPropagation());
   modalContainer.appendChild(modalContent);
   mainModal.appendChild(modalContainer);
   generateFirstModalContent();
